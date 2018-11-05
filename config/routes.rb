@@ -24,6 +24,18 @@ Rails.application.routes.draw do
   match 'users/:id' => 'users#show', :via => [:get]
   match 'users/:id' => 'users#update', :via => [:put]
 
+  match 'venues/' => 'venues#index', :via => [:get]
+  match 'venues/' => 'venues#create', :via => [:post]
+  match 'venues/:id' => 'venues#show', :via => [:get]
+  match 'venues/:id' => 'venues#update', :via => [:put]
+  match 'venues/:id' => 'venues#destroy', :via => [:delete]
+
+  match '/venues/:venue_id/sections/' => 'sections#index', :via => [:get]
+  match '/venues/:venue_id/sections/' => 'sections#create', :via => [:post]
+  match '/venues/:venue_id/sections/:id' => 'sections#show', :via => [:get]
+  match '/venues/:venue_id/sections/:id' => 'sections#update', :via => [:put]
+  match '/venues/:venue_id/sections/:id' => 'sections#destroy', :via => [:delete]
+
   root 'application#hello'
 
 end

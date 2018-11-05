@@ -8,13 +8,26 @@
 
 # Seed User
 user1 = User.create({
-	name: 'Hitler'
+	name: 'Anjing'
+})
+
+# Seed Venues
+venue1 = Venue.create({
+	name: 'Depan Rumah',
+	address: 'Jalan rumah no. 69'
+})
+
+# Seed Sections
+venue1.sections.create({
+	name: 'Selokan1',
+	capacity: 1
 })
 
 # Seed Events
 event1 = Event.create({
-	name: 'Suicide',
-	description: 'Good bye cruel world'
+	name: 'Pup',
+	description: 'Defekasi massal',
+	venue_id: venue1.id
 })
 
 # Seed Invoices
@@ -30,5 +43,7 @@ invoice1 = user1.invoices.first
 
 # Seed Tickets
 invoice1.ticket_count.times do
-	invoice1.tickets.create({event_id: invoice1.event_id, user_id: invoice1.user_id})
+	invoice1.tickets.create({
+		event_id: invoice1.event_id, user_id: invoice1.user_id
+	})
 end
