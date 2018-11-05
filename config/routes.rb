@@ -3,8 +3,10 @@ Rails.application.routes.draw do
   get 'static_pages/home'
 
   match 'events/' => 'events#index', :via => [:get]
+  match 'events/' => 'events#create', :via => [:post]
   match 'events/:id' => 'events#show', :via => [:get]
-  match 'events/create' => 'events#create', :via => :post
+  match 'events/:id' => 'events#update', :via => [:put, :patch]
+  match 'events/:id' => 'events#destroy', :via => [:delete]
 
   root 'application#hello'
 
