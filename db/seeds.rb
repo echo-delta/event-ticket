@@ -6,28 +6,29 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+# Seed User
+user1 = User.create({
+	name: 'Hitler'
+})
+
 # Seed Events
-events = Event.create([
-	{
-		name: 'Event 1',
-		description: 'Event 1 description'
-	},
-	{
-		name: 'Event 2',
-		description: 'Event 2 description'
-	}
-])
+event1 = Event.create({
+	name: 'Suicide',
+	description: 'Good bye cruel world'
+})
 
 # Seed Invoices
-invoice1 = Invoice.create(
+user1.invoices.create(
 	{
-		event_id: 1,
+		user_id: user1.id,
+		event_id: event1.id,
 		ticket_count: 2,
 		is_paid: 0
 	}
 )
+invoice1 = user1.invoices.first
 
 # Seed Tickets
 invoice1.ticket_count.times do
-	invoice1.tickets.create({event_id: invoice1.event_id})
+	invoice1.tickets.create({event_id: invoice1.event_id, user_id: invoice1.user_id})
 end

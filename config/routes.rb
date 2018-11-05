@@ -19,6 +19,11 @@ Rails.application.routes.draw do
   match 'invoices/:id' => 'invoices#update', :via => [:put]
   match 'invoices/:id' => 'invoices#destroy', :via => [:delete]
 
+  match 'users/' => 'users#index', :via => [:get]
+  match 'users/' => 'users#create', :via => [:post]
+  match 'users/:id' => 'users#show', :via => [:get]
+  match 'users/:id' => 'users#update', :via => [:put]
+
   root 'application#hello'
 
 end
