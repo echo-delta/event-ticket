@@ -6,6 +6,7 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+# Seed Events
 events = Event.create([
 	{
 		name: 'Event 1',
@@ -16,3 +17,8 @@ events = Event.create([
 		description: 'Event 2 description'
 	}
 ])
+
+# Seed Tickets
+events.each do |event| 
+	event.tickets.create
+end
