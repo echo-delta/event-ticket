@@ -18,7 +18,16 @@ events = Event.create([
 	}
 ])
 
+# Seed Invoices
+invoice1 = Invoice.create(
+	{
+		event_id: 1,
+		ticket_count: 2,
+		is_paid: 0
+	}
+)
+
 # Seed Tickets
-events.each do |event| 
-	event.tickets.create
+invoice1.ticket_count.times do
+	invoice1.tickets.create({event_id: invoice1.event_id})
 end
