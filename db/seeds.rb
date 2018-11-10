@@ -10,6 +10,9 @@
 user1 = User.create({
 	name: 'Anjing'
 })
+user1 = User.create({
+	name: 'Kucing'
+})
 
 # Seed Venues
 venue1 = Venue.create({
@@ -20,7 +23,8 @@ venue1 = Venue.create({
 # Seed Sections
 venue1.sections.create({
 	name: 'Selokan1',
-	capacity: 1
+	capacity: 1,
+	price: 100
 })
 
 # Seed Events
@@ -31,19 +35,21 @@ event1 = Event.create({
 })
 
 # Seed Invoices
-user1.invoices.create(
-	{
-		user_id: user1.id,
-		event_id: event1.id,
-		ticket_count: 2,
-		is_paid: 0
-	}
-)
+user1.invoices.create({
+	user_id: user1.id,
+	event_id: event1.id,
+	is_paid: 1
+})
 invoice1 = user1.invoices.first
 
+# Seed Booked Sections
+invoice1.booked_sections.create({
+	section_id: 1
+})
+
 # Seed Tickets
-invoice1.ticket_count.times do
-	invoice1.tickets.create({
-		event_id: invoice1.event_id, user_id: invoice1.user_id
-	})
-end
+invoice1.tickets.create({
+	event_id: invoice1.event_id, 
+	user_id: invoice1.user_id,
+	section_id: 1
+})

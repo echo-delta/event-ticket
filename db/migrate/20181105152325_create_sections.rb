@@ -4,6 +4,7 @@ class CreateSections < ActiveRecord::Migration[5.1]
     	t.string :name
     	t.integer :capacity
     	t.references :venue, null: false
+    	t.integer :price, null: false
 
       t.timestamps
     end

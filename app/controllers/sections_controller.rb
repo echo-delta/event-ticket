@@ -36,7 +36,7 @@ before_action :set_section, only: [:show, :update, :destroy]
 
 	private
 		def section_params
-	  	params.require(:section).permit(:name, :capacity)
+	  	params.require(:section).permit(:name, :capacity, :price)
 		end
 
 		def set_venue

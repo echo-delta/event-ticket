@@ -36,6 +36,10 @@ Rails.application.routes.draw do
   match '/venues/:venue_id/sections/:id' => 'sections#update', :via => [:put]
   match '/venues/:venue_id/sections/:id' => 'sections#destroy', :via => [:delete]
 
+  match '/BookEvent/BookEvent' => 'transactions#book_event', :via => [:post]
+  match '/CancelTicket' => 'transactions#cancel_ticket', :via => [:post]
+  match '/GiftTicket' => 'transactions#gift_ticket', :via => [:post]
+
   root 'application#hello'
 
 end

@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181105152325) do
+ActiveRecord::Schema.define(version: 20181106064350) do
+
+  create_table "booked_sections", force: :cascade do |t|
+    t.integer "invoice_id", null: false
+    t.integer "section_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["invoice_id"], name: "index_booked_sections_on_invoice_id"
+    t.index ["section_id"], name: "index_booked_sections_on_section_id"
+  end
 
   create_table "events", force: :cascade do |t|
     t.string "name", null: false
@@ -24,7 +33,6 @@ ActiveRecord::Schema.define(version: 20181105152325) do
   create_table "invoices", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "event_id", null: false
-    t.integer "ticket_count", null: false
     t.integer "is_paid", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -36,6 +44,7 @@ ActiveRecord::Schema.define(version: 20181105152325) do
     t.string "name"
     t.integer "capacity"
     t.integer "venue_id", null: false
+    t.integer "price", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["venue_id"], name: "index_sections_on_venue_id"
@@ -45,10 +54,12 @@ ActiveRecord::Schema.define(version: 20181105152325) do
     t.integer "user_id", null: false
     t.integer "invoice_id"
     t.integer "event_id", null: false
+    t.integer "section_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["event_id"], name: "index_tickets_on_event_id"
     t.index ["invoice_id"], name: "index_tickets_on_invoice_id"
+    t.index ["section_id"], name: "index_tickets_on_section_id"
     t.index ["user_id"], name: "index_tickets_on_user_id"
   end
 
