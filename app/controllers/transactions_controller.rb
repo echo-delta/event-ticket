@@ -16,6 +16,7 @@ class TransactionsController < ApplicationController
 						@section.update(:capacity => @section.capacity - 1)
 						total_price += @section.price
 					end
+					# TODO: Call Payment Gateway(?) 
 		    	render json: { 'parameters' => {'StatusMessage' => 'Book success. Please pay ASAP.'}, 'invoice' => @invoice, 'total_price': total_price }
 				else
 		      render json: { 'parameters' => {'StatusMessage' => 'Book failed.'} }
@@ -29,8 +30,28 @@ class TransactionsController < ApplicationController
 	end
 
 	def pay_invoice
-		# TODO: set payment reminder 
+		# TODO: Call Payment Gateway(?) 
 
+		@parameters = params[:parameters]
+		if Invoice.exists?(@parameters[:InvoiceId])
+			@invoice = Invoice.find(@parameters[:InvoiceId])
+			if @invoice.is_paid == 0
+				@invoice.booked_sections.each do |booked_section|
+					@invoice.tickets.create(
+						:user_id => @invoice.user_id,
+						:event_id => @invoice.event_id,
+						:section_id => booked_section.section_id
+					)
+				end
+				@invoice.update(:is_paid => 1)
+				ticketIdList = Ticket.where(:invoice_id => @invoice.id)
+				render json: { 'parameters' => {'TicketIdList' => ticketIdList.map(&:id)} }
+			else
+				render json: { 'parameters' => {'TicketIdList' => [-1]} }
+			end
+		else
+			render json: { 'parameters' => {'TicketIdList' => [-1]} }
+		end
 
 	end
 
@@ -44,7 +65,7 @@ class TransactionsController < ApplicationController
 
 				@invoice.tickets.each do |ticket|
 					@section = Section.find(ticket.section_id)
-					@section.update(:capacity =>@section.capacity + 1)
+					@section.update(:capacity => @section.capacity + 1)
 					ticket.destroy
 				end
 				render json: { 'parameters' => {'StatusMessage' => "Refund success."} }

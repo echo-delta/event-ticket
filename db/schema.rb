@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181106064350) do
+ActiveRecord::Schema.define(version: 20181110053014) do
 
   create_table "booked_sections", force: :cascade do |t|
     t.integer "invoice_id", null: false
@@ -19,6 +19,21 @@ ActiveRecord::Schema.define(version: 20181106064350) do
     t.datetime "updated_at", null: false
     t.index ["invoice_id"], name: "index_booked_sections_on_invoice_id"
     t.index ["section_id"], name: "index_booked_sections_on_section_id"
+  end
+
+  create_table "delayed_jobs", force: :cascade do |t|
+    t.integer "priority", default: 0, null: false
+    t.integer "attempts", default: 0, null: false
+    t.text "handler", null: false
+    t.text "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string "locked_by"
+    t.string "queue"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
   create_table "events", force: :cascade do |t|
