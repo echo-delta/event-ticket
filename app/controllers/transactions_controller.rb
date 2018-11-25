@@ -29,6 +29,23 @@ class TransactionsController < ApplicationController
 		end
 	end
 
+	def update_sections 
+		@parameters = params[:parameters]
+		if @invoice = Invoice.find(@parameters[:InvoiceId])
+					total_price = 0
+					@parameters[:SectionIdList].each do |sectionId|
+						@invoice.booked_sections.create(:section_id => sectionId)
+						@section = Section.find(sectionId)
+						@section.update(:capacity => @section.capacity + @parameters[:add_amount])
+						total_price += @section.price
+					end
+					# TODO: Call Payment Gateway(?) 
+		    	render json: { 'parameters' => {'StatusMessage' => 'Book success. Please pay ASAP.', 'invoice' => @invoice, 'total_price': total_price }}
+				else
+		      render json: { 'parameters' => {'StatusMessage' => 'Book failed.'} }
+				end
+	end
+
 	def pay_invoice
 		# TODO: Call Payment Gateway(?) 
 
@@ -55,7 +72,7 @@ class TransactionsController < ApplicationController
 
 	end
 
-	def cancel_ticket
+	def cancel_section
 		@parameters = params[:parameters]
 
 		if Invoice.exists?(@parameters[:InvoiceId])
@@ -66,9 +83,31 @@ class TransactionsController < ApplicationController
 				@invoice.tickets.each do |ticket|
 					@section = Section.find(ticket.section_id)
 					@section.update(:capacity => @section.capacity + 1)
-					ticket.destroy
 				end
 				render json: { 'parameters' => {'StatusMessage' => "Refund success."} }
+			else
+				render json: { 'parameters' => {'StatusMessage' => "Invoice is not paid yet."} }
+			end
+		else
+			render json: { 'parameters' => {'StatusMessage' => "Invoice doesn't exist."} }
+		end
+
+	end
+
+	def cancel_ticket
+		@parameters = params[:parameters]
+
+		if Invoice.exists?(@parameters[:InvoiceId])
+			@invoice = Invoice.find(@parameters[:InvoiceId])
+			if @invoice.is_paid == 1
+				# TODO: Call Payment Gateway
+				@sectionIdList = Array.new
+				@invoice.tickets.each do |ticket|
+					@sectionIdList.push(ticket.section_id)
+					ticket.destroy
+				@invoice.update(:is_paid => 2)
+				end
+				render json: { 'parameters' => {'StatusMessage' => "Ticket deleted.", "SectionIdList" => @sectionIdList}}
 			else
 				render json: { 'parameters' => {'StatusMessage' => "Invoice is not paid yet."} }
 			end
