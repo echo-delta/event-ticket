@@ -1,5 +1,5 @@
 # Change these
-server '167.205.35.216', port: 3000, roles: [:web, :app, :db], primary: true
+server '167.205.35.216', roles: [:web, :app, :db], primary: true
 
 set :repo_url,        'https://github.com/echo-delta/event-ticket.git'
 set :application,     'event-ticket'
