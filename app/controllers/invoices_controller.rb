@@ -16,7 +16,7 @@ before_action :set_invoice, only: [:show, :update, :destroy]
 		if @invoice.save
 			render json: { 'response' => 'Invoice saved.' , 'invoice' => @invoice }
 		else
-			render json: { 'response' => 'Creation failed.' }
+			render json: { 'response' => @invoice.errors.full_messages }
 		end
 	end
 
