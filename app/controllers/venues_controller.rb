@@ -35,7 +35,7 @@ before_action :set_venue, only: [:show, :update, :destroy]
 
 	private
 		def venue_params
-	  	params.require(:venue).permit(:name, :address)
+	  	params.require(:venue).permit(:name, :address, :is_foreign)
 		end
 
     def set_venue
