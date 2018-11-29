@@ -61,8 +61,9 @@ class TransactionsController < ApplicationController
 					)
 				end
 				@invoice.update(:is_paid => 1)
+				foreign = Venue.find(Event.find(@invoice.event_id).venue_id).is_foreign
 				ticketIdList = Ticket.where(:invoice_id => @invoice.id)
-				render json: { 'parameters' => {'TicketIdList' => ticketIdList.map(&:id)} }
+				render json: { 'parameters' => {'TicketIdList' => ticketIdList.map(&:id), 'is_foreign' => foreign} }
 			else
 				render json: { 'parameters' => {'TicketIdList' => [-1]} }
 			end
